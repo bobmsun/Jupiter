@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import external.GitHubClient;
+
 /**
  * Servlet implementation class SearchItem
  */
@@ -66,6 +68,12 @@ public class SearchItem extends HttpServlet {
 //		array.put(new JSONObject().put("name", "abce").put("address", "san francisoco").put("time", "01/01/2017"));
 //		array.put(new JSONObject().put("name", "1234").put("address", "san jose").put("time", "01/02/2017"));
 //		RpcHelper.writeJsonArray(response, array);
+		
+		double lat = Double.parseDouble(request.getParameter("lat"));
+		double lon = Double.parseDouble(request.getParameter("lon"));
+		GitHubClient client = new GitHubClient();
+		JSONArray array = client.search(lat, lon, null);
+		RpcHelper.writeJsonArray(response, array);
 
 	}
 
