@@ -24,6 +24,7 @@ public class Item {
 		this.keywords = builder.keywords;
 	}
 	
+	// We don't have public setter in this Item class, because we want immutability.
 	
 	public String getItemId() {
 		return itemId;
