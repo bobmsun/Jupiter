@@ -3,6 +3,7 @@ package rpc;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import db.MySQLConnection;
 import entity.Item;
 import external.GitHubClient;
 
@@ -71,13 +73,25 @@ public class SearchItem extends HttpServlet {
 //		array.put(new JSONObject().put("name", "1234").put("address", "san jose").put("time", "01/02/2017"));
 //		RpcHelper.writeJsonArray(response, array);
 		
+		String userId = request.getParameter("user_id");           // Need user_id to get all favorited jobs for this user
+		
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
+		
+		// Search
 		GitHubClient client = new GitHubClient();
 		List<Item> itemList = client.search(lat, lon, null);
+		
+		// Get all favorited jobs for this user
+		MySQLConnection connection = new MySQLConnection();
+		Set<String> favoritedItemIds = connection.getFavoriteItemIds(userId);
+		connection.close();
+		
+		
 		JSONArray array = new JSONArray();
 		for (Item item : itemList) {
 			JSONObject obj = item.toJSONObject();
+			obj.put("favorite", favoritedItemIds.contains(item.getItemId()));       // Mark favorited or not, this is for front end display
 			array.put(obj);
 		}
 		
