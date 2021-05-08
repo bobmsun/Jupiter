@@ -128,7 +128,7 @@ public class GitHubClient {
 	
 	// If the key in JSONObject does not exist, the get will throw exception
 	private String getStringFieldOrEmpty(JSONObject obj, String field) {
-		// If the key doesnot exist in the JSONObject, the isNull will return false; otherwise return true.
+		// If the key does not exist in the JSONObject, the isNull will return false; otherwise return true.
 		return obj.isNull(field) ? "" : obj.getString(field);
 	}
 
