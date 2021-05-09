@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -33,6 +34,13 @@ public class ItemHistory extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Add session validation to protect my service
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
+		
 		String userId = request.getParameter("user_id");      // get parameter from url --> getParameter() function
 		
 		MySQLConnection connection = new MySQLConnection();     // Create a MySQL database connection
@@ -52,6 +60,12 @@ public class ItemHistory extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
+		
 		JSONObject input = new JSONObject(IOUtils.toString(request.getReader()));    // Get body of the request
 		String userId = input.getString("user_id");
 		JSONObject itemJsonObject = input.getJSONObject("favorite");
@@ -69,6 +83,12 @@ public class ItemHistory extends HttpServlet {
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
+		
 		JSONObject input = new JSONObject(IOUtils.toString(request.getReader()));    // Get body of the request
 		String userId = input.getString("user_id");
 		JSONObject itemJsonObject = input.getJSONObject("favorite");
