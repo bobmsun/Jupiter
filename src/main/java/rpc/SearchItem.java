@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -72,6 +73,13 @@ public class SearchItem extends HttpServlet {
 //		array.put(new JSONObject().put("name", "abce").put("address", "san francisoco").put("time", "01/01/2017"));
 //		array.put(new JSONObject().put("name", "1234").put("address", "san jose").put("time", "01/02/2017"));
 //		RpcHelper.writeJsonArray(response, array);
+		
+		// Add session validation to protect my service
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			response.setStatus(403);
+			return;
+		}
 		
 		String userId = request.getParameter("user_id");           // Need user_id to get all favorited jobs for this user
 		
