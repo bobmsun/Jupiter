@@ -30,6 +30,7 @@ public class ItemHistory extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -56,6 +57,7 @@ public class ItemHistory extends HttpServlet {
 		RpcHelper.writeJsonArray(response, array);
 	}
 
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -79,6 +81,7 @@ public class ItemHistory extends HttpServlet {
 		RpcHelper.writeJsonObject(response, new JSONObject().put("result", "SUCCESS"));    // This line is for debug purposes
 	}
 
+	
 	/**
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */

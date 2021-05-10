@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
 			connection.close();
 		} else {
 			obj.put("status", "Invalid Session");
-			response.setStatus(403);
+			response.setStatus(403);               // 403 Forbiden
 		}
 		RpcHelper.writeJsonObject(response, obj);
 	}
@@ -63,9 +63,12 @@ public class Login extends HttpServlet {
 		MySQLConnection connection = new MySQLConnection();
 		JSONObject obj = new JSONObject();
 		if (connection.verifyLogin(userId, password)) {
+			
+			// Create a session once verification is successful
 			HttpSession session = request.getSession();
 			session.setAttribute("user_id", userId);
-			session.setMaxInactiveInterval(600);
+			session.setMaxInactiveInterval(600);       // 10 min (600s)
+			
 			obj.put("status", "OK").put("user_id", userId).put("name", connection.getFullname(userId));
 		} else {
 			obj.put("status", "User Doesn't Exist");
